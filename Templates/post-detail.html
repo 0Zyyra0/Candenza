@@ -1,0 +1,208 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="{{ post.title }}">
+    <meta name="author" content="{{ post.author.username }}">
+
+    <title>{{ post.title }} | Candenza</title>
+
+    <link type="text/css"
+          rel="stylesheet"
+          href="{% static 'css/base.css' %}" />
+
+    <link type="text/css"
+          rel="stylesheet"
+          href="{% static 'css/animate.css' %}" />
+
+    <link type="text/css"
+          rel="stylesheet"
+          href="{% static 'css/magnific-popup.css' %}" />
+
+    <link type="text/css"
+          rel="stylesheet"
+          href="{% static 'css/owl-carousel.css' %}" />
+
+    <link type="text/css"
+          rel="stylesheet"
+          href="{% static 'css/style.css' %}" />
+
+</head>
+
+
+<body>
+
+    <div class="rewall_fn_wrapper_all">
+
+        <div class="rewall_fn_wrapper">
+
+
+            <!-- Header -->
+
+            <div class="rewall_fn_header">
+
+                <div class="header_in">
+
+                    <div class="logo">
+
+                        <a href="{% url 'website:index' %}">
+                            Candenza
+                        </a>
+
+                    </div>
+
+
+                    <div class="menu">
+
+                        <ul class="anchor_nav">
+
+                            <li>
+                                <a href="{% url 'website:index' %}">
+                                    Home
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'website:index' %}#blog">
+                                    News &amp; Tips
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- /Header -->
+
+
+            <!-- Blog Detail -->
+
+            <div class="rewall_fn_content">
+
+                <div class="container">
+
+                    <div class="fn_cs_about">
+
+                        <div class="about_left">
+
+                            <div class="title">
+
+                                <h3>
+                                    {{ post.title }}
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="about_right">
+
+                            {% if post.image %}
+
+                                <div class="img_holder">
+
+                                    <img
+                                        src="{{ post.image.url }}"
+                                        alt="{{ post.title }}"
+                                    />
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <div class="post_meta">
+
+                                <p>
+                                    Published:
+                                    {{ post.created_date|date:"F d, Y" }}
+                                </p>
+
+                                <p>
+                                    Author:
+                                    {{ post.author.username }}
+                                </p>
+
+
+                                <p>
+
+                                    Categories:
+
+                                    {% for category in post.category.all %}
+
+                                        <span>
+                                            {{ category.name }}
+                                        </span>
+
+                                        {% if not forloop.last %}
+                                            ,
+                                        {% endif %}
+
+                                    {% empty %}
+
+                                        No category
+
+                                    {% endfor %}
+
+                                </p>
+
+                            </div>
+
+
+                            <div class="post_content">
+
+                                {{ post.content|linebreaks }}
+
+                            </div>
+
+
+                            <div class="main_button">
+
+                                <a href="{% url 'website:index' %}#blog">
+
+                                    Back to News &amp; Tips
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- /Blog Detail -->
+
+
+        </div>
+
+    </div>
+
+
+    <!-- Scripts -->
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+
+    <script src="{% static 'js/plugins.js' %}"></script>
+
+    <script src="{% static 'js/init.js' %}"></script>
+
+</body>
+
+</html>
