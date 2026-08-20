@@ -1135,7 +1135,8 @@
 									</div>
 
 								</div>
-								<ul>
+								<ul id="blog-post-list">
+
 
 									{% for post in posts %}
 
@@ -1200,7 +1201,31 @@
 									{% endfor %}
 
 								</ul>
+								<p style="color:red;">
+									POSTS: {{ posts|length }}
+									|
+									HAS NEXT: {{ page_obj.has_next }}
+									|
+									PAGE: {{ page_obj.number }}
+									|
+									TOTAL: {{ page_obj.paginator.num_pages }}
+								</p>
+								{% if page_obj.has_next %}
 
+								<div class="load_more" id="load-more-container">
+
+									<a href="javascript:void(0);" id="load-more-button"
+										data-page="{{ page_obj.next_page_number }}"
+										data-url="{% url 'website:load_more_posts' %}"
+										data-search="{{ search|default:'' }}"
+										data-category="{{ category_id|default:'' }}">
+										<span class="text">Load More</span>
+										<span class="icon"></span>
+									</a>
+
+								</div>
+
+								{% endif %}
 								<div class="clearfix"></div>
 
 
@@ -1333,7 +1358,82 @@
 	<!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->
 	<script type="text/javascript" src="{% static 'js/init.js' %}"></script>
 	<!-- /Scripts -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
 
+			const button = document.getElementById('load-more-button');
+
+			if (!button) {
+				return;
+			}
+
+			button.addEventListener('click', function (event) {
+
+				event.preventDefault();
+
+				const page = button.dataset.page;
+				const url = button.dataset.url;
+				const search = button.dataset.search;
+				const category = button.dataset.category;
+
+				const text = button.querySelector('.text');
+
+				text.textContent = 'Loading...';
+
+				const params = new URLSearchParams();
+
+				params.append('page', page);
+
+				if (search) {
+					params.append('search', search);
+				}
+
+				if (category) {
+					params.append('category', category);
+				}
+
+				fetch(url + '?' + params.toString(), {
+					method: 'GET',
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest'
+					}
+				})
+					.then(response => response.json())
+					.then(data => {
+
+						const postList =
+							document.getElementById('blog-post-list');
+
+						postList.insertAdjacentHTML(
+							'beforeend',
+							data.html
+						);
+
+						if (data.has_next) {
+
+							button.dataset.page = data.next_page;
+							text.textContent = 'Load More';
+
+						} else {
+
+							document
+								.getElementById('load-more-container')
+								.remove();
+
+						}
+
+					})
+					.catch(error => {
+
+						console.error(error);
+						text.textContent = 'Load More';
+
+					});
+
+			});
+
+		});
+	</script>
 </body>
 
 </html>

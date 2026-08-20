@@ -1,0 +1,59 @@
+{% load static %}
+
+{% for post in posts %}
+
+<li>
+    <div class="item">
+
+        <div class="left_part">
+
+            <div class="img_holder">
+
+                <a href="{% url 'website:post_detail' post.id %}"></a>
+
+                <img
+                    src="{% static 'img/thumb/square.jpg' %}"
+                    alt="{{ post.title }}"
+                >
+
+                <div
+                    class="abs_img"
+                    data-bg-img="{{ post.image.url }}">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="right_part">
+
+            <div class="title">
+
+                <h3>
+                    <a href="{% url 'website:post_detail' post.id %}">
+                        {{ post.title }}
+                    </a>
+                </h3>
+
+                <p>
+                    {{ post.created_date|date:"F d. Y" }}
+                </p>
+
+            </div>
+
+
+            <div class="main_button">
+
+                <a href="{% url 'website:post_detail' post.id %}">
+                    Continue Reading
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</li>
+
+{% endfor %}

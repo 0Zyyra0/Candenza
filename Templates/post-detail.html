@@ -7,33 +7,22 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <meta name="description" content="{{ post.title }}">
     <meta name="author" content="{{ post.author.username }}">
 
     <title>{{ post.title }} | Candenza</title>
 
-    <link type="text/css"
-          rel="stylesheet"
-          href="{% static 'css/base.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}" />
 
-    <link type="text/css"
-          rel="stylesheet"
-          href="{% static 'css/animate.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/animate.css' %}" />
 
-    <link type="text/css"
-          rel="stylesheet"
-          href="{% static 'css/magnific-popup.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" />
 
-    <link type="text/css"
-          rel="stylesheet"
-          href="{% static 'css/owl-carousel.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/owl-carousel.css' %}" />
 
-    <link type="text/css"
-          rel="stylesheet"
-          href="{% static 'css/style.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" />
 
 </head>
 
@@ -112,14 +101,11 @@
 
                             {% if post.image %}
 
-                                <div class="img_holder">
+                            <div class="img_holder">
 
-                                    <img
-                                        src="{{ post.image.url }}"
-                                        alt="{{ post.title }}"
-                                    />
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" />
 
-                                </div>
+                            </div>
 
                             {% endif %}
 
@@ -143,17 +129,17 @@
 
                                     {% for category in post.category.all %}
 
-                                        <span>
-                                            {{ category.name }}
-                                        </span>
+                                    <span>
+                                        {{ category.name }}
+                                    </span>
 
-                                        {% if not forloop.last %}
-                                            ,
-                                        {% endif %}
+                                    {% if not forloop.last %}
+                                    ,
+                                    {% endif %}
 
                                     {% empty %}
 
-                                        No category
+                                    No category
 
                                     {% endfor %}
 
@@ -169,16 +155,72 @@
                             </div>
 
 
-                            <div class="main_button">
+                            <div class="post_navigation">
+
+                                {% if previous_post %}
+                                <a href="{% url 'website:post_detail' previous_post.id %}">
+                                    ← {{ previous_post.title }}
+                                </a>
+                                {% endif %}
 
                                 <a href="{% url 'website:index' %}#blog">
-
                                     Back to News &amp; Tips
-
                                 </a>
+
+                                {% if next_post %}
+                                <a href="{% url 'website:post_detail' next_post.id %}">
+                                    {{ next_post.title }} →
+                                </a>
+                                {% endif %}
+
+                            </div>
+                            {% if related_posts %}
+
+                            <div class="related_posts">
+
+                                <div class="main_title">
+
+                                    <h3>Related Posts</h3>
+
+                                </div>
+
+                                <div class="related_posts_list">
+
+                                    {% for related in related_posts %}
+
+                                    <div class="related_post">
+
+                                        {% if related.image %}
+
+                                        <a href="{% url 'website:post_detail' related.id %}">
+
+                                            <img src="{{ related.image.url }}" alt="{{ related.title }}">
+
+                                        </a>
+
+                                        {% endif %}
+
+                                        <h4>
+
+                                            <a href="{% url 'website:post_detail' related.id %}">
+                                                {{ related.title }}
+                                            </a>
+
+                                        </h4>
+
+                                        <p>
+                                            {{ related.created_date|date:"F d, Y" }}
+                                        </p>
+
+                                    </div>
+
+                                    {% endfor %}
+
+                                </div>
 
                             </div>
 
+                            {% endif %}
                         </div>
 
                     </div>
